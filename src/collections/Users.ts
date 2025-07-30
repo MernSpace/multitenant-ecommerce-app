@@ -8,30 +8,10 @@ export const Users: CollectionConfig = {
   },
   fields: [
     {
-      name: 'firstName',
+      name: 'username',
       type: 'text',
       required: true,
-    },
-    {
-      name: 'lastName',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'role',
-      type: 'select',
-      options: [
-        {
-          label: 'Admin',
-          value: 'admin',
-        },
-        {
-          label: 'User',
-          value: 'user',
-        },
-      ],
-      defaultValue: 'user',
-      required: true,
+      unique: true
     },
   ],
 }
