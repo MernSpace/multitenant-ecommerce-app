@@ -1,10 +1,9 @@
 import { headers as getHeaders, cookies as getCookies } from "next/headers";
 
 import { baseProcedure, createTRPCRouter } from "@/trpc/init"
-import z from "zod"
 import { TRPCError } from "@trpc/server";
-import { AUTH_COOKIE } from "../constants";
 import { loginSchema, registerSchema } from "../schemas";
+import { generateAuthCokie } from "../utils";
 
 
 export const authRouter = createTRPCRouter({
@@ -14,11 +13,6 @@ export const authRouter = createTRPCRouter({
 
         return session;
     }),
-    logout: baseProcedure.mutation(async () => {
-        const cookies = await getCookies()
-        cookies.delete(AUTH_COOKIE)
-    }),
-
     register: baseProcedure
         .input(
             registerSchema
@@ -63,12 +57,9 @@ export const authRouter = createTRPCRouter({
                     message: "Failed to login"
                 })
             }
-            const cookies = await getCookies()
-            cookies.set({
-                name: AUTH_COOKIE,
-                value: data.token,
-                httpOnly: true,
-                path: "/"
+            await generateAuthCokie({
+                prefix: ctx.db.config.cookiePrefix,
+                value: data.token
             })
         }),
 
@@ -91,12 +82,9 @@ export const authRouter = createTRPCRouter({
                     message: "Failed to login"
                 })
             }
-            const cookies = await getCookies()
-            cookies.set({
-                name: AUTH_COOKIE,
-                value: data.token,
-                httpOnly: true,
-                path: "/"
+            await generateAuthCokie({
+                prefix: ctx.db.config.cookiePrefix,
+                value: data.token
             })
             return data
         })
