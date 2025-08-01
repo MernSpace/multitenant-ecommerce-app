@@ -11,8 +11,15 @@ export const ProductList = ({ category }: Props) => {
         category
     }))
     return (
-        <div>
-            {JSON.stringify(data, null, 2)}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+            {data?.docs.map((product) => (
+                <div key={product.id} className="border rounded-md bg-amber-100 p-4 text-center">
+                    <h2>
+                        {product.name}
+                    </h2>
+                    <p>{product.price}</p>
+                </div>
+            ))}
         </div>
     )
 }
