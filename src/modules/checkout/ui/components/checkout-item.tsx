@@ -10,7 +10,7 @@ interface CheckoutItemProps {
     tenantUrl: string;
     tenantName: string;
     id: string;
-    price: string;
+    price: number;
     onRemove: () => void
 }
 
