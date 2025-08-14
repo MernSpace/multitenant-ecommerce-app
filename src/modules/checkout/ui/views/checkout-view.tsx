@@ -4,13 +4,14 @@ import { useTRPC } from "@/trpc/client";
 import { useCart } from "../../hooks/use-cart";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import { generateTenantURL } from "@/lib/utils";
 import { CheckoutItem } from "../components/checkout-item";
 import { CheckoutSidebar } from "../components/checkout-sidebar";
 import { InboxIcon, LoaderIcon } from "lucide-react";
 import { useCheckoutStates } from "../../hooks/use-checkout-states";
 import { useRouter } from "next/navigation";
+import { getQueryClient } from "@/trpc/server";
 
 interface CheckoutViewProps {
     tenantSlug: string;
@@ -22,6 +23,7 @@ export const CheckoutView = ({ tenantSlug }: CheckoutViewProps) => {
     const [states, setStates] = useCheckoutStates();
     const { productIds, clearCart, removeProduct } = useCart(tenantSlug)
     const trpc = useTRPC()
+    const queryClient = getQueryClient()
     const { data, error, isLoading } = useQuery(trpc.checkout.getProducts.queryOptions({
         ids: productIds,
     }))
@@ -44,10 +46,10 @@ export const CheckoutView = ({ tenantSlug }: CheckoutViewProps) => {
         if (states.success) {
             setStates({ success: false, cancel: false })
             clearCart()
-            //todo
-            router.push("/products")
+            queryClient.invalidateQueries(trpc.library.getMany.infiniteQueryFilter())
+            router.push("/library")
         }
-    }, [states.success, clearCart, router, setStates])
+    }, [states.success, clearCart, router, setStates, queryClient, trpc.library.getMany])
 
     useEffect(() => {
         if (error?.data?.code === "NOT_FOUND") {
