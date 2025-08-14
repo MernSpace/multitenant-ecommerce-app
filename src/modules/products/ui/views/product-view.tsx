@@ -5,13 +5,14 @@ import { Button } from "@/components/ui/button";
 import { formatCurrency, generateTenantURL } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { LinkIcon, StarIcon } from "lucide-react";
+import { CheckIcon, LinkIcon, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import dynamic from "next/dynamic";
 
 import { Progress } from "@/components/ui/progress";
+import { toast } from "sonner";
 // import { CartButton } from "../components/cart-button";
 
 const CartButton = dynamic(
@@ -41,6 +42,8 @@ export const ProductView = ({
     const { data } = useSuspenseQuery(trpc.products.getOne.queryOptions({
         id: productId
     }))
+
+    const [copy, setCopy] = useState(false)
     return (
         <div className="px-4 lg:px-12 py-10">
             <div className="border rounded-sm bg-white overflow-hidden">
@@ -82,20 +85,20 @@ export const ProductView = ({
                             <div className="hidden lg:flex px-6 py-4 items-center justify-center">
                                 <div className="flex items-center gap-1">
                                     <StarRating
-                                        rating={4}
+                                        rating={data.reviewRaring}
                                         iconClassName="size-4"
                                     />
-                                    <p className="text-base font-medium">5 ratings</p>
+                                    <p className="text-base font-medium">{data.reviewCount} ratings</p>
                                 </div>
                             </div>
                         </div>
                         <div className="block lg:hidden px-6 py-4 items-center justify-center border-b">
                             <div className="flex items-center gap-1">
                                 <StarRating
-                                    rating={4}
+                                    rating={data.reviewRaring}
                                     iconClassName="size-4"
                                 />
-                                <p className="text-base font-medium">5 ratings</p>
+                                <p className="text-base font-medium">{data.reviewCount} ratings</p>
                             </div>
                         </div>
                         <div className="p-6">
@@ -121,10 +124,17 @@ export const ProductView = ({
                                     <Button
                                         className="size-12"
                                         variant={'elevated'}
-                                        onClick={() => { }}
-                                        disabled={false}
+                                        onClick={() => {
+                                            setCopy(true)
+                                            navigator.clipboard.writeText(window.location.href);
+                                            toast.success("Url copied to clipboard");
+                                            setTimeout(() => {
+                                                setCopy(false)
+                                            }, 1000)
+                                        }}
+                                        disabled={copy}
                                     >
-                                        <LinkIcon />
+                                        {copy ? <CheckIcon /> : <LinkIcon />}
                                     </Button>
                                 </div>
                                 <p className="text-sm text-muted-foreground">
@@ -136,8 +146,8 @@ export const ProductView = ({
                                     <h3 className="text-xl font-medium">Rating</h3>
                                     <div className="flex items-center gap-x-1 font-medium">
                                         <StarIcon className="size-4 fill-black" />
-                                        <p>({5})</p>
-                                        <p className="text-base">{5} ratings</p>
+                                        <p>({data.reviewRaring})</p>
+                                        <p className="text-base">{data.reviewCount} ratings</p>
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-[auto_1fr_auto] gap-3 mt-4">
@@ -145,11 +155,11 @@ export const ProductView = ({
                                         <Fragment key={stars}>
                                             <div className="font-medium">{stars} {stars === 1 ? "star" : "stars"}</div>
                                             <Progress
-                                                value={0}
+                                                value={data.ratingDistribution[stars]}
                                                 className="h-[1lh]"
                                             />
                                             <div className="font-medium">
-                                                {0} %
+                                                {data.ratingDistribution[stars]} %
                                             </div>
                                         </Fragment>
                                     ))}

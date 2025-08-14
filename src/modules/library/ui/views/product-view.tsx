@@ -14,35 +14,48 @@ export const ProductView = ({ productId }: Props) => {
     const { data } = useSuspenseQuery(trpc.library.getOne.queryOptions({
         productId
     }))
+
     return (
-        <div className="min-h-screen bg-white">
-            <nav className="p-4 bg-[#F4F4F0] w-full border-b">
-                <Link prefetch href={"/"} className="flex items-center gap-2">
-
-                    <ArrowLeftIcon className="size-4" />
-                    <span className="text font-medium">Back</span>
-
-                </Link>
+        <div className="min-h-screen bg-gray-50">
+            {/* Navigation */}
+            <nav className="p-4 bg-white border-b border-gray-200">
+                <div className="max-w-7xl mx-auto">
+                    <Link href="/" className="inline-flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors">
+                        <ArrowLeftIcon className="w-4 h-4" />
+                        <span className="text-sm font-medium">Back to library</span>
+                    </Link>
+                </div>
             </nav>
-            <header className="bg-[#F4F4F0] py-8 border-b">
-                <div className="max-w-(--breakpoint-xl) mx-auto lg:px-12 px-4 ">
-                    <h1 className="text-[40px] font-medium">{data.name}</h1>
+
+            {/* Header */}
+            <header className="bg-white border-b border-gray-200 py-8">
+                <div className="max-w-7xl mx-auto px-4 lg:px-12">
+                    <h1 className="text-3xl lg:text-4xl font-semibold text-gray-900">
+                        {data?.name || 'Product Name'}
+                    </h1>
                 </div>
             </header>
-            <section className="max-w-(--breakpoint-xl) mx-auto lg:px-12 px-4 py-10"  >
-                <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 lg:gap-16">
-                    <div className="lg:col-span-3">
-                        <div className="p-4 bg-white rounded-md border gap-4">
+
+            {/* Main Content */}
+            <main className="max-w-7xl mx-auto px-4 lg:px-12 py-8">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {/* Review Sidebar */}
+                    <div className="lg:col-span-1">
+                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                             <ReviewSidebar productId={productId} />
                         </div>
                     </div>
-                    <div className="lg:col-span-5">
-                        <p className="font-medium italic text-muted-foreground">No specal</p>
+
+                    {/* Main Content Area */}
+                    <div className="lg:col-span-2">
+                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 min-h-96">
+                            <p className="text-gray-500 italic text-center mt-16">
+                                No special content
+                            </p>
+                        </div>
                     </div>
-
                 </div>
-
-            </section>
+            </main>
         </div>
     )
 }

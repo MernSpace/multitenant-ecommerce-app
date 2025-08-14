@@ -18,9 +18,9 @@ export const ProductList = ({ category, tenantSlug, narrowView }: Props) => {
     const trpc = useTRPC();
     const { data, hasNextPage, isFetchingNextPage, fetchNextPage } = useSuspenseInfiniteQuery(trpc.products.getMany.infiniteQueryOptions(
         {
+            ...filters,
             category,
             tenantSlug,
-            ...filters,
             limit: DEFAULT_LIMIT
         },
         {
@@ -53,8 +53,8 @@ export const ProductList = ({ category, tenantSlug, narrowView }: Props) => {
                         imageUrl={product.image?.url}
                         tenantSlug={product.tenant?.slug}
                         tenantImageUrl={product.tenant?.image?.url}
-                        reviewCount={5}
-                        reviewRating={4}
+                        reviewCount={product.reviewRaring}
+                        reviewRating={product.reviewCount}
                         price={product.price}
                     />
                 ))}
