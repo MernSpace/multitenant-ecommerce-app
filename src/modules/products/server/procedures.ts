@@ -25,7 +25,10 @@ export const productsRouter = createTRPCRouter({
             const product = await ctx.db.findByID({
                 collection: "products",
                 id: input.id,
-                depth: 2
+                depth: 2,
+                select: {
+                    content: false
+                }
             })
             let isPurchased = false;
             if (session.user) {
@@ -193,7 +196,10 @@ export const productsRouter = createTRPCRouter({
                 where,
                 sort,
                 page: input.cursor,
-                limit: input.limit
+                limit: input.limit,
+                select: {
+                    content: false
+                }
 
             })
 
