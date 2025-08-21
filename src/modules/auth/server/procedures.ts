@@ -4,6 +4,7 @@ import { baseProcedure, createTRPCRouter } from "@/trpc/init"
 import { TRPCError } from "@trpc/server";
 import { loginSchema, registerSchema } from "../schemas";
 import { generateAuthCokie } from "../utils";
+import { stripe } from "@/lib/stripe";
 
 
 export const authRouter = createTRPCRouter({
@@ -34,12 +35,21 @@ export const authRouter = createTRPCRouter({
                     message: "username alrady taken"
                 })
             }
+
+            const account = await stripe.accounts.create({})
+            if (!account) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: "Failed to create stripe account"
+                })
+            }
+
             const tenant = await ctx.db.create({
                 collection: "tenants",
                 data: {
                     name: input.username,
                     slug: input.username,
-                    stripeAccountId: "test"
+                    stripeAccountId: account.id
                 }
             })
 

@@ -2,7 +2,7 @@
 
 import { useTRPC } from "@/trpc/client";
 import { useCart } from "../../hooks/use-cart";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { generateTenantURL } from "@/lib/utils";
@@ -11,7 +11,6 @@ import { CheckoutSidebar } from "../components/checkout-sidebar";
 import { InboxIcon, LoaderIcon } from "lucide-react";
 import { useCheckoutStates } from "../../hooks/use-checkout-states";
 import { useRouter } from "next/navigation";
-import { getQueryClient } from "@/trpc/server";
 
 interface CheckoutViewProps {
     tenantSlug: string;
@@ -23,7 +22,7 @@ export const CheckoutView = ({ tenantSlug }: CheckoutViewProps) => {
     const [states, setStates] = useCheckoutStates();
     const { productIds, clearCart, removeProduct } = useCart(tenantSlug)
     const trpc = useTRPC()
-    const queryClient = getQueryClient()
+    const queryClient = useQueryClient()
     const { data, error, isLoading } = useQuery(trpc.checkout.getProducts.queryOptions({
         ids: productIds,
     }))
