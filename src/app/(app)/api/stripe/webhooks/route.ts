@@ -27,6 +27,7 @@ export async function POST(req: Request) {
     console.log("✅ Success:", event.id)
     const premittedEvents: string[] = [
         "checkout.session.completed",
+        "account.updated"
     ]
     const payload = await getPayload({ config })
     if (premittedEvents.includes(event.type)) {
@@ -50,6 +51,9 @@ export async function POST(req: Request) {
                         data.id,
                         {
                             expand: ["line_items.data.price.product"]
+                        },
+                        {
+                            stripeAccount: event.account
                         }
                     )
                     if (
@@ -64,6 +68,7 @@ export async function POST(req: Request) {
                             collection: "orders",
                             data: {
                                 stripeCheckoutSessionId: data.id,
+                                stripeAccountId: event.account,
                                 user: user.id,
                                 product: item.price.product.metadata.id,
                                 name: item.price.product.name
@@ -71,6 +76,20 @@ export async function POST(req: Request) {
                         })
                     }
                     break;
+
+                case "account.updated":
+                    data = event.data.object as Stripe.Account;
+                    await payload.update({
+                        collection: "tenants",
+                        where: {
+                            stripeAccountId: {
+                                equals: data.id
+                            }
+                        },
+                        data: {
+                            stripDetailsSubmited: data.details_submitted
+                        }
+                    })
                 default:
                     throw new Error(`Unhandled event" ${event.type}`)
 
