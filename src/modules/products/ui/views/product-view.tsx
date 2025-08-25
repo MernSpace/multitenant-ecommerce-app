@@ -32,13 +32,13 @@ const CartButton = dynamic(
 
 interface ProductViewProps {
     productId: string;
-    tenanatSlug: string;
+    tenantSlug: string;
 
 }
 
 export const ProductView = ({
     productId,
-    tenanatSlug
+    tenantSlug
 }: ProductViewProps) => {
     const trpc = useTRPC()
     const { data } = useSuspenseQuery(trpc.products.getOne.queryOptions({
@@ -69,7 +69,7 @@ export const ProductView = ({
                                 </div>
                             </div>
                             <div className="px-6 py-4 flex items-center justify-center lg:border-r">
-                                <Link href={generateTenantURL(tenanatSlug)} className="flex items-center gap-2">
+                                <Link href={generateTenantURL(tenantSlug)} className="flex items-center gap-2">
                                     {
                                         data.tenant.image?.url && (
                                             <Image
@@ -123,7 +123,7 @@ export const ProductView = ({
                                     <CartButton
                                         isPurchased={data.isPurchased}
                                         productId={productId}
-                                        tenantSlug={tenanatSlug}
+                                        tenantSlug={tenantSlug}
                                     />
                                     <Button
                                         className="size-12"
