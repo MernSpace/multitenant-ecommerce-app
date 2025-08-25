@@ -1,7 +1,7 @@
 // storage-adapter-import-placeholder
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { lexicalEditor, UploadFeature } from '@payloadcms/richtext-lexical'
 import { multiTenantPlugin } from "@payloadcms/plugin-multi-tenant"
 
 import path from 'path'
@@ -34,7 +34,23 @@ export default buildConfig({
     }
   },
   collections: [Users, Media, Categories, Products, Tags, Tenants, Orders, Reviews],
-  editor: lexicalEditor(),
+  editor: lexicalEditor({
+    features: ({ defaultFeatures }) => [
+      ...defaultFeatures,
+      UploadFeature({
+        collections: {
+          media: {
+            fields: [
+              {
+                name: "name",
+                type: "text"
+              }
+            ]
+          }
+        }
+      })
+    ]
+  }),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
