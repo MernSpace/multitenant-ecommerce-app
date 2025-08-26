@@ -4,7 +4,7 @@ export const Footer = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 {/* Shop Branding */}
                 <div>
-                    <h2 className="text-2xl font-bold tracking-tight">Esho Bazzar</h2>
+                    <h2 className="text-2xl font-bold tracking-tight">Nachol Bazzar</h2>
                     <p className="text-sm text-muted-foreground mt-2">
                         Your one-stop shop for everything you love. Quality products, fast delivery, and unmatched support.
                     </p>

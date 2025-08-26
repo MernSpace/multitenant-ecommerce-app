@@ -15,6 +15,9 @@ export const generateAuthCokie = async ({
         name: `${prefix}-token`,
         value: value,
         httpOnly: true,
-        path: "/"
+        path: "/",
+        sameSite: "none",
+        domain: process.env.NEXT_PUBLIC_ROOTDOMAIN,
+        secure: process.env.NODE_ENV === "production"
     })
 }
