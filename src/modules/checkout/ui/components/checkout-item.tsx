@@ -8,8 +8,6 @@ interface CheckoutItemProps {
     name: string,
     productUrl: string;
     tenantUrl: string;
-    tenantName: string;
-    id: string;
     price: number;
     onRemove: () => void
 }
@@ -19,8 +17,6 @@ export const CheckoutItem = ({
     imageUrl,
     name,
     productUrl,
-    tenantName,
-    id,
     price,
     tenantUrl,
     onRemove

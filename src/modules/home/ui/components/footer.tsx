@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export const Footer = () => {
     return (
         <footer className="bg-background border-t border-border text-foreground">
@@ -14,10 +16,10 @@ export const Footer = () => {
                 <div>
                     <h3 className="text-sm font-semibold mb-4">Shop</h3>
                     <ul className="space-y-2 text-sm">
-                        <li><a href="/categories" className="hover:underline">All Categories</a></li>
-                        <li><a href="/deals" className="hover:underline">Deals</a></li>
-                        <li><a href="/new" className="hover:underline">New Arrivals</a></li>
-                        <li><a href="/best-sellers" className="hover:underline">Best Sellers</a></li>
+                        <li><Link href="/categories" className="hover:underline">All Categories</Link></li>
+                        <li><Link href="/deals" className="hover:underline">Deals</Link></li>
+                        <li><Link href="/new" className="hover:underline">New Arrivals</Link></li>
+                        <li><Link href="/best-sellers" className="hover:underline">Best Sellers</Link></li>
                     </ul>
                 </div>
 
@@ -25,10 +27,10 @@ export const Footer = () => {
                 <div>
                     <h3 className="text-sm font-semibold mb-4">Support</h3>
                     <ul className="space-y-2 text-sm">
-                        <li><a href="/help" className="hover:underline">Help Center</a></li>
-                        <li><a href="/returns" className="hover:underline">Returns & Refunds</a></li>
-                        <li><a href="/shipping" className="hover:underline">Shipping Info</a></li>
-                        <li><a href="/contact" className="hover:underline">Contact Us</a></li>
+                        <li><Link href="/help" className="hover:underline">Help Center</Link></li>
+                        <li><Link href="/returns" className="hover:underline">Returns & Refunds</Link></li>
+                        <li><Link href="/shipping" className="hover:underline">Shipping Info</Link></li>
+                        <li><Link href="/contact" className="hover:underline">Contact Us</Link></li>
                     </ul>
                 </div>
 
@@ -49,6 +51,7 @@ export const Footer = () => {
                         </button>
                     </form>
                     <div className="flex space-x-4 mt-4 text-muted-foreground">
+                        {/* Socials can stay <a> since they are external */}
                         <a href="#" aria-label="Facebook">📘</a>
                         <a href="#" aria-label="Instagram">📸</a>
                         <a href="#" aria-label="Twitter">🐦</a>

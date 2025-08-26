@@ -91,13 +91,11 @@ export const CheckoutView = ({ tenantSlug }: CheckoutViewProps) => {
                             data?.docs.map((product, index) => (
                                 <CheckoutItem
                                     key={product.id}
-                                    id={product.id}
                                     isLast={index === data.docs.length - 1}
                                     imageUrl={product.image?.url}
                                     name={product.name}
                                     productUrl={`${generateTenantURL(product.tenant.slug)}/products/${product.id}`}
                                     tenantUrl={generateTenantURL(product.tenant.slug)}
-                                    tenantName={product.tenant.name}
                                     price={product.price}
                                     onRemove={() => removeProduct(product.id)}
                                 />

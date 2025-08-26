@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/modules/checkout/hooks/use-cart";
 import Link from "next/link";
-import { date } from "zod";
 
 interface Props {
     tenantSlug: string;

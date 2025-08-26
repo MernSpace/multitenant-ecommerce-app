@@ -1,10 +1,8 @@
 "use client"
 
-import Image from "next/image"
 import Link from "next/link"
 import { generateTenantURL } from "../../../../lib/utils"
 // import { CheckoutButton } from "@/modules/checkout/ui/components/checkout-button"
-import dynamic from "next/dynamic"
 import { Button } from "@/components/ui/button"
 
 

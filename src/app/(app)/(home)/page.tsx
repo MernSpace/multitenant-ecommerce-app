@@ -9,6 +9,9 @@ import { DEFAULT_LIMIT } from "@/constants";
 interface Props {
     searchParams: Promise<SearchParams>
 }
+
+export const dynamic = "force-dynamic"
+
 const page = async ({ searchParams }: Props) => {
     const filters = await loadProductFilter(searchParams)
     const queryClient = getQueryClient();
