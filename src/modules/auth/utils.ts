@@ -13,11 +13,14 @@ export const generateAuthCokie = async ({
     const cookies = await getCookies();
     cookies.set({
         name: `${prefix}-token`,
-        value: value,
+        value,
         httpOnly: true,
         path: "/",
-        sameSite: "none",
-        domain: process.env.NEXT_PUBLIC_ROOTDOMAIN,
-        secure: process.env.NODE_ENV === "production"
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        secure: process.env.NODE_ENV === "production",
+        // ⚠️ remove domain in dev, only use for real root domain in prod
+        domain: process.env.NODE_ENV === "production"
+            ? process.env.NEXT_PUBLIC_ROOTDOMAIN
+            : undefined
     })
 }
