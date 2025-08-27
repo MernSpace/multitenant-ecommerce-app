@@ -37,18 +37,6 @@ export default buildConfig({
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
       ...defaultFeatures,
-      UploadFeature({
-        collections: {
-          media: {
-            fields: [
-              {
-                name: "name",
-                type: "text"
-              }
-            ]
-          }
-        }
-      })
     ]
   }),
   secret: process.env.PAYLOAD_SECRET || '',
